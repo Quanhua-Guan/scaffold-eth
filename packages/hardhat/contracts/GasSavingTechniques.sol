@@ -10,7 +10,7 @@ pragma solidity ^0.8.0;
 // - Short circuit
 
 // gas golf
-contract /*GasGolf*/YourContract {
+contract GasGolf {
     // start - 50908 gas
     // use calldata - 49163 gas
     // load state variables to memory - 48952 gas
