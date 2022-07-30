@@ -284,7 +284,7 @@ contract ERC721 is IERC721, IERC721Metadata {
     }
 }
 
-contract YourContract /*GQHApe*/ is ERC721 {
+contract GQHApe is ERC721 {
     uint public MAX_APES = 10000; // 总量
 
     // 构造函数
