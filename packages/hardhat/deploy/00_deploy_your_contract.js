@@ -20,9 +20,15 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   await deploy("YourContract", {
     // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
     from: deployer,
-    // args: [ "HelloApe", "HA" ],
+    args: [
+      ["0x6367B680d138569476dB383F288acBd157b8d44f","0x9a5f778c5411b7a89633E7D527dEF938032BCe17"], 
+      [ethers.utils.parseEther("2"), ethers.utils.parseEther("3")],
+      24 * 60 * 60,
+      24 * 60 * 60,
+    ],
     log: true,
     waitConfirmations: 5,
+    value: ethers.utils.parseEther("5")
   });
 
   // Getting a previously deployed contract
@@ -40,8 +46,26 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   */
 
   /*
+
+  ethereum.enable()
+  account = "0xe16C1623c1AA7D919cd2241d8b36d9E79C1Be2A2"
+  hash = "0x1bf2c0ce4546651a1a2feb457b39d891a6b83931cc2454434f39961345ac378c"
+  ethereum.request({method: "personal_sign", params: [account, hash]})
+  */
+
+  //*
   //If you want to send value to an address from the deployer
-  const deployerWallet = ethers.provider.getSigner()
+  // const hash = await YourContract.getHash(ethers.utils.parseEther("0.05"));
+  // const ethhash = await YourContract.getEthSignedHash(ethers.utils.parseEther("0.05"));
+  // const [_,signer] = await ethers.getSigners();  
+  // const sig = await signer.signMessage(hash); /// why this the signature is different from the one signed by metamask?
+  // console.log("signer address: ", await signer.getAddress());
+  // console.log("hash: ", hash);
+  // console.log("ethhash: ", ethhash);
+  // console.log("signed message: ", sig);
+
+  // console.log("verify: ", await YourContract.verify2(ethhash, sig));
+  /*
   await deployerWallet.sendTransaction({
     to: "0x34aA3F359A9D614239015126635CE7732c18fDF3",
     value: ethers.utils.parseEther("0.001")

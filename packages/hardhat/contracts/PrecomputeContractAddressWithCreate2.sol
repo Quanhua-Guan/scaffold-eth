@@ -20,7 +20,7 @@ contract Factory {
 }
 
 // This is the older way of doing it using assembly
-contract YourContract/*_FactoryAssembly*/ {
+contract YourContract_FactoryAssembly {
     event Deployed(address addr, uint256 salt);
 
     Factory factory = new Factory();
