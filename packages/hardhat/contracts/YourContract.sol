@@ -11,8 +11,14 @@ contract YourContract {
 
   string public purpose = "Building Unstoppable Apps!!!";
 
+  mapping(address => string) public content;
+
   constructor() payable {
     // what should we do on deploy?
+  }
+
+  function setContent(string calldata _content) public {
+    content[msg.sender] = _content;
   }
 
   function setPurpose(string memory newPurpose) public {

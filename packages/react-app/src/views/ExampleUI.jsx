@@ -4,6 +4,9 @@ import { utils } from "ethers";
 import { SyncOutlined } from "@ant-design/icons";
 
 import { Address, Balance, Events } from "../components";
+import { ipfs, addToIPFS, getFromIPFS, urlFromCID } from "../helpers/ipfs";
+import { useEffect } from "react";
+import { useContractReader } from "eth-hooks";
 
 export default function ExampleUI({
   purpose,
@@ -18,6 +21,21 @@ export default function ExampleUI({
 }) {
   const [newPurpose, setNewPurpose] = useState("loading...");
 
+  const [content, setContent] = useState("");
+  const [contentHash, setContentHash] = useState("");
+  const [contentIpfsUrl, setContentIpfsUrl] = useState("");
+  const [isGettingHash, setIsGettingHash] = useState(false);
+
+
+  const _contentHash = useContractReader(readContracts, "YourContract", "content", [address]);
+
+  useEffect(() => {
+    const url = urlFromCID(contentHash);
+    setContentIpfsUrl(url);
+    console.log("result file url  : ", url);
+    console.log("result file url 2: ", contentIpfsUrl);
+  }, [contentHash, contentIpfsUrl]);
+
   return (
     <div>
       {/*
@@ -28,6 +46,70 @@ export default function ExampleUI({
         <h4>purpose: {purpose}</h4>
         <Divider />
         <div style={{ margin: 8 }}>
+          <Input onChange={e => {
+            setContent(e.target.value);
+          }} />
+          {
+            isGettingHash ? <Spin />
+              :
+              <Button
+                style={{ marginTop: 8 }}
+                onClick={async () => {
+                  console.log("content: " + content);
+                  setIsGettingHash(true);
+                  const result = await addToIPFS(content);
+                  console.log("result of addToIPFS: ", result);
+                  setContentHash(result.path);
+                  setIsGettingHash(false);
+                }}
+              > GetHash </Button>
+          }
+
+          <div style={{ margin: 32 }}>
+            <span style={{ marginRight: 8 }}>!!!!</span>
+            IPFS URL:
+            <span
+              className="highlight"
+              style={{
+                marginLeft: 4,
+                padding: 4,
+                borderRadius: 4,
+                fontWeight: "bolder",
+              }}
+            >
+              <a href={contentIpfsUrl} target="_blank">{ contentHash ? contentIpfsUrl : _contentHash || "XXX" }</a></span>
+          </div>
+
+          <div style={{ marginBottom: 8 }}>
+            <Button
+              style={{ marginTop: 8 }}
+
+              onClick={async () => {
+                const result = tx(writeContracts.YourContract.setContent(contentHash), update => {
+                  console.log("📡 Transaction Update:", update);
+                  if (update && (update.status === "confirmed" || update.status === 1)) {
+                    console.log(" 🍾 Transaction " + update.hash + " finished!");
+                    console.log(
+                      " ⛽️ " +
+                      update.gasUsed +
+                      "/" +
+                      (update.gasLimit || update.gas) +
+                      " @ " +
+                      parseFloat(update.gasPrice) / 1000000000 +
+                      " gwei",
+                    );
+                  }
+                });
+                console.log("awaiting metamask/web3 confirm result...", result);
+                console.log(await result);
+              }}
+            > Store to CONTENT </Button>
+          </div>
+
+          <div style={{ marginBottom: 8, marginBottom: 28 }}>
+            Your content: { _contentHash || "empty content" }
+          </div>
+
           <Input
             onChange={e => {
               setNewPurpose(e.target.value);
@@ -44,12 +126,12 @@ export default function ExampleUI({
                   console.log(" 🍾 Transaction " + update.hash + " finished!");
                   console.log(
                     " ⛽️ " +
-                      update.gasUsed +
-                      "/" +
-                      (update.gasLimit || update.gas) +
-                      " @ " +
-                      parseFloat(update.gasPrice) / 1000000000 +
-                      " gwei",
+                    update.gasUsed +
+                    "/" +
+                    (update.gasLimit || update.gas) +
+                    " @ " +
+                    parseFloat(update.gasPrice) / 1000000000 +
+                    " gwei",
                   );
                 }
               });
@@ -195,16 +277,16 @@ export default function ExampleUI({
           <div style={{ marginTop: 8 }}>
             Date Pickers?
             <div style={{ marginTop: 2 }}>
-              <DatePicker onChange={() => {}} />
+              <DatePicker onChange={() => { }} />
             </div>
           </div>
 
           <div style={{ marginTop: 32 }}>
-            <Slider range defaultValue={[20, 50]} onChange={() => {}} />
+            <Slider range defaultValue={[20, 50]} onChange={() => { }} />
           </div>
 
           <div style={{ marginTop: 32 }}>
-            <Switch defaultChecked onChange={() => {}} />
+            <Switch defaultChecked onChange={() => { }} />
           </div>
 
           <div style={{ marginTop: 32 }}>
