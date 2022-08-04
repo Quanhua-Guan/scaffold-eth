@@ -30,6 +30,17 @@ export default function ExampleUI({
   const _contentHash = useContractReader(readContracts, "YourContract", "content", [address]);
 
   useEffect(() => {
+    const getContentFromIPFS = async () => {
+      if (_contentHash) {
+        const result = await getFromIPFS(_contentHash);
+        console.log("get from ipfs: " + result);
+        setContent(result);
+      }
+    };
+    getContentFromIPFS();
+  }, [_contentHash]);
+
+  useEffect(() => {
     const url = urlFromCID(contentHash);
     setContentIpfsUrl(url);
     console.log("result file url  : ", url);
@@ -77,7 +88,7 @@ export default function ExampleUI({
                 fontWeight: "bolder",
               }}
             >
-              <a href={contentIpfsUrl} target="_blank">{ contentHash ? contentIpfsUrl : _contentHash || "XXX" }</a></span>
+              <a href={contentIpfsUrl} target="_blank">{contentHash ? contentIpfsUrl : _contentHash || "XXX"}</a></span>
           </div>
 
           <div style={{ marginBottom: 8 }}>
@@ -107,7 +118,11 @@ export default function ExampleUI({
           </div>
 
           <div style={{ marginBottom: 8, marginBottom: 28 }}>
-            Your content: { _contentHash || "empty content" }
+            Your content hash: {_contentHash || "empty content hash"}
+          </div>
+
+          <div style={{ marginBottom: 8, marginBottom: 28 }}>
+            Your content from ipfs: {content || "empty content"}
           </div>
 
           <Input
