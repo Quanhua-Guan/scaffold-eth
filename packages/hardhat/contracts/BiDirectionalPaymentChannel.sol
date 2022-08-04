@@ -35,7 +35,7 @@ Closing a channel when Alice and Bob do not agree on the final balances
 
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
-contract YourContract /*BiDirectionalPaymentChannel*/ {
+contract YourContract_BiDirectionalPaymentChannel {
     using ECDSA for bytes32;
 
     event ChallengeExit(address indexed sender, uint256 nonce);

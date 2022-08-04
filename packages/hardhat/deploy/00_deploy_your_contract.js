@@ -17,22 +17,24 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   const { deployer } = await getNamedAccounts();
   const chainId = await getChainId();
 
+  console.log("deployer: ", deployer);
+
   await deploy("YourContract", {
     // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
     from: deployer,
-    args: [
-      ["0x6367B680d138569476dB383F288acBd157b8d44f","0x9a5f778c5411b7a89633E7D527dEF938032BCe17"], 
-      [ethers.utils.parseEther("2"), ethers.utils.parseEther("3")],
-      24 * 60 * 60,
-      24 * 60 * 60,
-    ],
+    // args: [
+    //   ["0x6367B680d138569476dB383F288acBd157b8d44f", "0x9a5f778c5411b7a89633E7D527dEF938032BCe17"],
+    //   [ethers.utils.parseEther("2"), ethers.utils.parseEther("3")],
+    //   24 * 60 * 60,
+    //   24 * 60 * 60,
+    // ],
     log: true,
     waitConfirmations: 5,
-    value: ethers.utils.parseEther("5")
+    // value: ethers.utils.parseEther("5")
   });
 
   // Getting a previously deployed contract
-  const YourContract = await ethers.getContract("YourContract", deployer);
+  // const YourContract = await ethers.getContract("YourContract", deployer);
   /*  await YourContract.setPurpose("Hello");
   
     // To take ownership of yourContract using the ownable library uncomment next line and add the 
@@ -44,6 +46,13 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
 
     //const YourContract = await ethers.getContractAt('YourContract', "0xaAC799eC2d00C013f1F11c37E654e59B0429DF6A") //<-- if you want to instantiate a version of a contract at a specific address!
   */
+
+  // if (chainId == localChainId) {
+  //   await deployer.sendTransaction({
+  //     to: "0x9a5f778c5411b7a89633E7D527dEF938032BCe17",
+  //     value: ethers.utils.parseEther("10")
+  //   });
+  // }
 
   /*
 
