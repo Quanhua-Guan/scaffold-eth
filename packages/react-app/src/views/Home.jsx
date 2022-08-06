@@ -1,6 +1,6 @@
 import { useContractReader } from "eth-hooks";
 import { ethers } from "ethers";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 /**
@@ -9,10 +9,32 @@ import { Link } from "react-router-dom";
  * @param {*} readContracts contracts from current chain already pre-loaded using ethers contract module. More here https://docs.ethers.io/v5/api/contract/contract/
  * @returns react component
  **/
-function Home({ yourLocalBalance, readContracts }) {
+function Home({ yourLocalBalance, readContracts, address }) {
   // you can also use hooks locally in your component of choice
   // in this case, let's keep track of 'purpose' variable from our contract
   const purpose = useContractReader(readContracts, "YourContract", "purpose");
+
+  const bb = useContractReader(readContracts, "YourContract", "balanceOf", [address]);
+
+  const [b, setB] = useState();
+  const [balance, setBalance] = useState();
+
+  useEffect(() => {
+    if (bb) {
+      setB(ethers.utils.formatEther(bb));
+    }
+  }, [bb]);
+
+  useEffect(() => {
+    const getBalance = async () => {
+      console.log("1xxx: ", readContracts, address);
+      const balanceContract = await readContracts.YourContract.balanceOf(address);
+      console.log("2xxx: ", balanceContract / (10 ** 18));
+      setBalance(ethers.utils.formatEther(balanceContract));
+    };
+    if (address && readContracts.YourContract && readContracts.YourContract.balanceOf)
+      getBalance();
+  }, [address, readContracts]);
 
   return (
     <div>
@@ -25,6 +47,10 @@ function Home({ yourLocalBalance, readContracts }) {
         >
           packages/react-app/src/views/Home.jsx
         </span>
+      </div>
+      <div style={{ margin: 32 }}>
+        <span style={{ marginRight: 8 }}>📝</span>
+        Test balance: {balance || "undefined"} / {b || "undefined"}
       </div>
       <div style={{ margin: 32 }}>
         <span style={{ marginRight: 8 }}>✏️</span>
