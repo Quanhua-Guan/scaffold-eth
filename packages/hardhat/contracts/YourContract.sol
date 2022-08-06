@@ -60,38 +60,58 @@ contract YourContract {
 
             bool flag;
             while (tmp < input[j]) {
-              input[j + 1] = input[j];
+                input[j + 1] = input[j];
 
-              if (j == 0) {
-                flag = true;
-                break;
-              }
-              j--; // please keep in mind that uint cant not be negative, or it will cause error and revert.
+                if (j == 0) {
+                    flag = true;
+                    break;
+                }
+                j--; // please keep in mind that uint cant not be negative, or it will cause error and revert.
             }
 
             if (flag) {
-              input[j] = tmp;  
+                input[j] = tmp;
             } else {
-              input[j + 1] = tmp;
+                input[j + 1] = tmp;
             }
         }
         return input;
     }
 
     // 插入排序 正确版
-    function insertionSort(uint[] memory a) public pure returns(uint[] memory) {
+    function insertionSort(uint256[] memory a)
+        public
+        pure
+        returns (uint256[] memory)
+    {
         // note that uint can not take negative value
-        for (uint i = 1;i < a.length;i++){
-            uint temp = a[i];
-            uint j=i;
-            while( (j >= 1) && (temp < a[j-1])){
-                a[j] = a[j-1];
+        for (uint256 i = 1; i < a.length; i++) {
+            uint256 temp = a[i];
+            uint256 j = i;
+            while ((j >= 1) && (temp < a[j - 1])) {
+                a[j] = a[j - 1];
                 j--;
             }
             a[j] = temp;
         }
-        return(a);
+        return (a);
     }
+
+    address public owner;
+
+    modifier onlyOwner() /*()*/
+    {
+        // 如果没有参数 "()" 可以省略掉
+        require(msg.sender == owner);
+        _;
+    }
+
+    event TestEvent(
+        address indexed addr1,
+        address indexed addr2,
+        uint indexed index2,
+        uint256 value
+    );
 
     receive() external payable {}
 
