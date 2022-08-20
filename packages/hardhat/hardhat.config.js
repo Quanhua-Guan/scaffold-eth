@@ -27,7 +27,7 @@ const { isAddress, getAddress, formatUnits, parseUnits } = utils;
 //
 // Select the network you want to deploy to here:
 //
-const defaultNetwork = "localhost";
+const defaultNetwork = "goerli";
 
 const mainnetGwei = 21;
 
@@ -103,8 +103,8 @@ module.exports = {
       },
     },
     goerli: {
-      url: "https://goerli.infura.io/v3/460f40a260564ac4a4f4b3fffb032dad", // <---- YOUR INFURA ID! (or it won't work)
-      //      url: "https://speedy-nodes-nyc.moralis.io/XXXXXXXXXXXXXXXXXXXXXXXXX/eth/goerli", // <---- YOUR MORALIS ID! (not limited to infura)
+      url: "https://goerli.infura.io/v3/8e2d4cd0d25d4e75ac2f2ab969f77009", // <---- YOUR INFURA ID! (or it won't work)
+      //      url: "https://speedy-nodes-nyc.moralis.io/XXXXXXXXXXXXXXXXXXXXXXXXX/eth/goerli", // <---- YOUR MORALIS ID! (not limited to infura)           
       accounts: {
         mnemonic: mnemonic(),
       },
@@ -154,12 +154,23 @@ module.exports = {
       },
     },
     optimism: {
-      url: "https://mainnet.optimism.io",
+      url: "https://opt-mainnet.g.alchemy.com/v2/QpCf4oM1ubCDjXc4kK03THaxHaDx62wk",
+      chainId: 10,
+      companionNetworks: {
+        l1: "mainnet",
+      },
       accounts: {
         mnemonic: mnemonic(),
       },
+    },
+    goerliOptimism: {
+      name: "goerliOptimism",          
+      url: "https://opt-goerli.g.alchemy.com/v2/yMVfYxcq_imoaYQ9qsZPwbitXMv9VuIj",
       companionNetworks: {
-        l1: "mainnet",
+        l1: "goerli",
+      },
+      accounts: {
+        mnemonic: mnemonic(),
       },
     },
     kovanOptimism: {
@@ -290,21 +301,13 @@ module.exports = {
   solidity: {
     compilers: [
       {
-        version: "0.8.4",
+        version: "0.8.16",
         settings: {
           optimizer: {
             enabled: true,
             runs: 200,
           },
-        },
-      },
-      {
-        version: "0.6.7",
-        settings: {
-          optimizer: {
-            enabled: true,
-            runs: 200,
-          },
+          viaIR: true,
         },
       },
     ],
@@ -319,8 +322,10 @@ module.exports = {
   },
   etherscan: {
     apiKey: {
-      mainnet: "DNXJA8RX2Q3VZ4URQIWP7Z68CJXQZSC6AW",
+      mainnet: "PFCZTNTCSW72DNXHMBWRRCE9A7JRHT4PTU",
       // add other network's API key here
+      goerli: "PFCZTNTCSW72DNXHMBWRRCE9A7JRHT4PTU",
+      // goerliOptimism: "X8D62JT97P6IF7XGXMW3FYZFQNQM7BP99N",
     },
   },
   abiExporter: {
