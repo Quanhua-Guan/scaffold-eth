@@ -15,6 +15,10 @@ require("@nomiclabs/hardhat-etherscan");
 
 const { isAddress, getAddress, formatUnits, parseUnits } = utils;
 
+const { setGlobalDispatcher, ProxyAgent } = require('undici');
+const proxyAgent = new ProxyAgent("http://127.0.0.1:7890");
+setGlobalDispatcher(proxyAgent);
+
 /*
       📡 This is where you configure your deploy configuration for 🏗 scaffold-eth
 
@@ -105,6 +109,7 @@ module.exports = {
     goerli: {
       url: "https://goerli.infura.io/v3/8e2d4cd0d25d4e75ac2f2ab969f77009", // <---- YOUR INFURA ID! (or it won't work)
       //      url: "https://speedy-nodes-nyc.moralis.io/XXXXXXXXXXXXXXXXXXXXXXXXX/eth/goerli", // <---- YOUR MORALIS ID! (not limited to infura)           
+      // url: "https://eth-goerli.g.alchemy.com/v2/DjuhKQkRiLHhOEeCQytKYTB1wS3t9HUq",
       accounts: {
         mnemonic: mnemonic(),
       },
@@ -325,6 +330,7 @@ module.exports = {
       mainnet: "PFCZTNTCSW72DNXHMBWRRCE9A7JRHT4PTU",
       // add other network's API key here
       goerli: "PFCZTNTCSW72DNXHMBWRRCE9A7JRHT4PTU",
+      rinkeby: "PFCZTNTCSW72DNXHMBWRRCE9A7JRHT4PTU",
       // goerliOptimism: "X8D62JT97P6IF7XGXMW3FYZFQNQM7BP99N",
     },
   },
